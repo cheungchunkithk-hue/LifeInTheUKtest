@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Life in the UK — Bilingual 練習工具</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Life in the UK — Bilingual(英/中)</h1>
+
+    <div class="controls">
+      <label class="lang">
+        <span>語言</span>
+        <select id="langSelect" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh" selected>繁體中文</option>
+        </select>
+      </label>
+
+      <label class="mode">
+        <span>模式</span>
+        <select id="modeSelect" aria-label="Mode">
+          <option value="quiz" selected>測驗</option>
+          <option value="flash">單字卡</option>
+          <option value="review">錯題重溫</option>
+        </select>
+      </label>
+
+      <button id="startBtn">開始</button>
+    </div>
+  </header>
+
+  <main id="app" class="card">
+    <div id="meta" class="meta">
+      <span id="counter">第 0 / 0 題</span>
+      <span id="score">正確:0 錯誤:0</span>
+    </div>
+
+    <h2 id="question" class="question">按「開始」載入題目</h2>
+
+    <ul id="options" class="options" role="listbox"></ul>
+
+    <div id="flashBtns" class="flash-btns hidden">
+      <button id="showAnswerBtn">顯示答案</button>
+      <button id="markWrongBtn">我答錯了</button>
+      <button id="nextCardBtn">下一張</button>
+    </div>
+
+    <div id="nav" class="nav hidden">
+      <button id="nextBtn">下一題</button>
+    </div>
+
+    <p id="tip" class="tip"></p>
+  </main>
+
+  <footer class="foot">
+    <small>資料僅供備考練習使用．進度會保存在你的瀏覽器。</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
