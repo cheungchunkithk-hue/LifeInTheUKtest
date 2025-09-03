@@ -75,20 +75,45 @@ body::before {
 /* Toggle Switch */
 .lang { display: inline-block; position: relative; }
 .lang input { display: none; }
+
 .switch {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 80px; height: 36px; border-radius: 999px;
-  background: var(--bad); cursor: pointer; position: relative;
-  transition: background .3s; padding: 0 8px; color: #fff; font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--bad);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+  padding: 0 10px; /* 讓文字左右更對齊 */
+  color: #fff;
+  font-weight: 700;
+  overflow: hidden;
 }
+
 .switch::after {
-  content: ""; position: absolute; top: 3px; left: 3px;
-  width: 30px; height: 30px; background: #fff; border-radius: 50%;
-  transition: transform .3s;
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  z-index: 1;
 }
+
+/* 開 (EN) */
 .lang input:checked + .switch { background: var(--ok); }
-.lang input:checked + .switch::after { transform: translateX(44px); }
+
+/* 80 - 3(左) - 30(球) - 3(右) ≈ 44；考慮 padding 及視覺微調用 47px 更對稱 */
+.lang input:checked + .switch::after { transform: translateX(47px); }
+
 .lang .on, .lang .off { font-size: 12px; }
+
 .lang input:checked + .switch .on { opacity: 1; }
 .lang input:checked + .switch .off { opacity: .6; }
 .lang input:not(:checked) + .switch .on { opacity: .6; }
