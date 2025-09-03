@@ -11,40 +11,39 @@
     <h1 id="title" data-i18n="title">Life in the UK</h1>
 
     <div class="controls">
-  <!-- 語言切換 -->
-  <label class="lang-toggle">
-    <input type="checkbox" id="langToggle" />
-    <span class="switch" role="switch" aria-checked="false" aria-label="Language">
-      <span class="on">EN</span>
-      <span class="off">中文</span>
-    </span>
-  </label>
+      <!-- 語言切換：注意 class 用 .lang 以配合 CSS -->
+      <label class="lang" for="langToggle">
+        <input type="checkbox" id="langToggle" />
+        <span class="switch" role="switch" aria-checked="false" aria-label="Language">
+          <span class="on">EN</span>
+          <span class="off">中文</span>
+        </span>
+      </label>
 
-  <!-- 題庫組別 -->
-  <label class="bank">
-    <span data-i18n="label_bank">Question set</span>
-    <select id="bankSelect" aria-label="Question set">
-      <option value="all" selected data-i18n-opt="bank_all">All</option>
-      <option value="A" data-i18n-opt="bank_a">Set A</option>
-      <option value="B" data-i18n-opt="bank_b">Set B</option>
-      <option value="C" data-i18n-opt="bank_c">Set C</option>
-    </select>
-  </label>
+      <!-- 題庫組別 -->
+      <label class="bank">
+        <span data-i18n="label_bank">Question set</span>
+        <select id="bankSelect" aria-label="Question set">
+          <option value="all" selected data-i18n-opt="bank_all">All</option>
+          <option value="A" data-i18n-opt="bank_a">Set A</option>
+          <option value="B" data-i18n-opt="bank_b">Set B</option>
+          <option value="C" data-i18n-opt="bank_c">Set C</option>
+        </select>
+      </label>
 
-  <!-- 模式 -->
-  <label class="mode">
-    <span data-i18n="label_mode">Mode</span>
-    <select id="modeSelect" aria-label="Mode">
-      <option value="quiz" selected data-i18n-opt="mode_quiz">Quiz</option>
-      <option value="flash" data-i18n-opt="mode_flash">Flashcards</option>
-      <option value="review" data-i18n-opt="mode_review">Review</option>
-      <option value="exam" data-i18n-opt="mode_exam">Exam</option>
-    </select>
-  </label>
+      <!-- 模式 -->
+      <label class="mode">
+        <span data-i18n="label_mode">Mode</span>
+        <select id="modeSelect" aria-label="Mode">
+          <option value="quiz" selected data-i18n-opt="mode_quiz">Quiz</option>
+          <option value="flash" data-i18n-opt="mode_flash">Flashcards</option>
+          <option value="review" data-i18n-opt="mode_review">Review</option>
+          <option value="exam" data-i18n-opt="mode_exam">Exam</option>
+        </select>
+      </label>
 
-  <button id="startBtn" data-i18n="start">Start</button>
-</div>
-
+      <button id="startBtn" data-i18n="start">Start</button>
+    </div>
   </header>
 
   <main id="app" class="card">
