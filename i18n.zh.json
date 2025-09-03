@@ -1,0 +1,22 @@
+{
+  "title": "英國生活常識 — 學習",
+  "start": "開始",
+  "hint_press_start": "按「開始」載入題目",
+  "mode_quiz": "測驗",
+  "mode_flash": "閃卡",
+  "mode_review": "複習",
+  "show_answer": "顯示答案",
+  "mark_wrong": "標記為錯",
+  "next": "下一題",
+  "next_card": "下一張卡",
+  "answer_prefix": "答案",
+  "footnote": "僅供練習。進度會儲存在你的瀏覽器。",
+  "correct": "正確",
+  "wrong": "錯誤",
+  "meta_q": "題目",
+  "review_title": "覆題",
+  "previous": "上一題",
+  "close": "關閉",
+  "review_all": "檢視所有題目",
+  "your_answer": "你的答案"
+}
