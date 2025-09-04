@@ -213,3 +213,30 @@ body::before {
   .options li { font-size: 15px; padding: 12px 14px; }
   .meta { gap: 4px; }
 }
+
+/* ===== Exam Ready Modal ===== */
+.modal.hidden { display: none !important; }
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: grid; place-items: center;
+  z-index: 999;
+}
+.modal-dialog {
+  width: min(520px, 92vw);
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.modal .rules { margin: 10px 0 18px; padding-left: 18px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.btn-primary, .btn-secondary {
+  padding: 10px 16px; border-radius: 8px; border: 1px solid transparent;
+  font-weight: 700; cursor: pointer;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-secondary { background: #f3f4f6; color: #111827; border-color: #e5e7eb; }
+.btn-secondary:hover { background: #e5e7eb; }

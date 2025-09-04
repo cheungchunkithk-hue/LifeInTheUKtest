@@ -23,5 +23,7 @@
   "bank_all": "All",
   "bank_a": "Set A",
   "bank_b": "Set B",
-  "bank_c": "Set C"
+  "bank_c": "Set C",
+  "exam_waiting": "Exam not started yet.",
+  "exam_ready_title": "Mock Exam — Ready?"
 }

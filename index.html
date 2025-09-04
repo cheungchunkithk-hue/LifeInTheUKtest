@@ -46,6 +46,23 @@
     </div>
   </header>
 
+  <!-- Exam Ready Modal -->
+<div id="examReady" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="examReadyTitle">
+  <div class="modal-dialog">
+    <h3 id="examReadyTitle" style="margin-top:0;">Mock Exam — Ready?</h3>
+    <ul class="rules">
+      <li>24 questions</li>
+      <li>45 minutes timer</li>
+      <li>Language locked to English</li>
+      <li>You can navigate Previous / Next / Skip</li>
+    </ul>
+    <div class="modal-actions">
+      <button id="examCancelBtn" class="btn-secondary">Cancel</button>
+      <button id="examBeginBtn" class="btn-primary">I’m ready, begin</button>
+    </div>
+  </div>
+</div>
+
   <main id="app" class="card">
     <div id="meta" class="meta">
       <span id="counter">Question 0 / 0</span>
@@ -67,6 +84,7 @@
       <button id="skipBtn" class="hidden">Skip</button>
       <button id="nextBtn" data-i18n="next">Next</button>
       <button id="submitBtn" class="hidden">Submit</button>
+      <button id="exitExamBtn" data-action="exit-exam">Exit Exam</button>
     </div>
 
     <p id="tip" class="tip"></p>

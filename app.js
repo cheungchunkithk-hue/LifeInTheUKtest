@@ -50,6 +50,9 @@ const prevBtn = document.getElementById("prevBtn");
 const skipBtn = document.getElementById("skipBtn");
 const unansweredEl = document.getElementById("unanswered");
 const bankSelect = document.getElementById("bankSelect");
+const examReadyEl   = document.getElementById("examReady");
+const examBeginBtn  = document.getElementById("examBeginBtn");
+const examCancelBtn = document.getElementById("examCancelBtn");
 
 
 /* ===== State ===== */
@@ -74,6 +77,29 @@ let examAnswers = [];
 let examTimerId = null;
 let examDeadline = 0;
 
+/* ===== 防止考試中誤關閉頁面 ===== */
+function enableUnloadWarning() {
+  window.onbeforeunload = (e) => {
+    if (examMode) {
+      e.preventDefault();
+      e.returnValue = ""; // 必須 return 空字串，瀏覽器才會顯示提示
+    }
+  };
+}
+function openExamReady() {
+  examReadyEl?.classList.remove("hidden");
+  // 小可及性優化：把焦點放到「Begin」鍵
+  setTimeout(() => examBeginBtn?.focus(), 0);
+}
+function closeExamReady() {
+  examReadyEl?.classList.add("hidden");
+}
+
+
+function disableUnloadWarning() {
+  window.onbeforeunload = null;
+}
+
 /* Review state (after submit) */
 let reviewMode = false;
 let reviewIdx = 0; // 0..deck.length-1
@@ -86,6 +112,21 @@ const reviewContainerId = "reviewPanel";
 window.addEventListener("DOMContentLoaded", async () => {
   try { await loadI18n(lang); } catch (e) { console.warn("i18n load failed", e); }
 });
+
+// 按 ESC 退出考試
+window.addEventListener("keydown", (e) => {
+  if (examMode && e.key === "Escape") {
+    e.preventDefault();
+    exitExamEarly();
+  }
+});
+
+// （可選）如果你在 HTML 放咗 <button data-action="exit-exam">Exit</button>
+navEl?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-action='exit-exam']");
+  if (btn && examMode) exitExamEarly();
+});
+
 // === Language toggle wiring ===
 const langToggleEl = document.getElementById("langToggle");
 
@@ -148,7 +189,6 @@ optsEl.onclick = (e) => {
 };
 
 
-modeSelect.addEventListener("change", () => { /* 按 Start 重新建立題組 */ });
 nextBtn.addEventListener("click", () => gotoNext(false));
 nextCardBtn?.addEventListener("click", () => gotoNext(true));
 submitBtn?.addEventListener("click", () => submitExam(false));
@@ -157,11 +197,20 @@ skipBtn?.addEventListener("click", skipCurrent);
 
 // Start：載入資料然後開始一個 session
 startBtn.addEventListener("click", async () => {
+  const mode = modeSelect.value;
+
+  // Exam 模式：先顯示準備頁，真正開始在 examBeginBtn 裏處理
+  if (mode === "exam") {
+    openExamReady();
+    return;
+  }
+
+  // 其他模式：維持原即時開始
   if (isStarting) return;
   isStarting = true; startBtn.disabled = true;
   try {
     await ensureDataLoaded();
-    await startSession(modeSelect.value);
+    await startSession(mode);  // quiz / flash / review
   } catch (err) {
     tipEl.textContent = "Failed to load: " + (err && err.message ? err.message : err);
     console.error(err);
@@ -170,14 +219,52 @@ startBtn.addEventListener("click", async () => {
   }
 });
 
-// （可選）切換題庫即時重開一輪
-bankSelect?.addEventListener("change", async () => {
-  if (!allQuestions.length) {
-    try { await ensureDataLoaded(); } catch (e) { console.error(e); return; }
+
+modeSelect.addEventListener("change", async () => {
+  if (examMode) { 
+    modeSelect.value = "exam";
+    tipEl.textContent = i18n.exam_switch_block || "Mode changes are disabled during the exam.";
+    return;
   }
   await startSession(modeSelect.value);
 });
 
+// 初始化時記住初始值
+if (bankSelect) bankSelect.dataset.prev = bankSelect.value || "all";
+
+bankSelect?.addEventListener("change", async () => {
+  if (examMode) {
+    // 還原返上一次值
+    if (bankSelect && bankSelect.dataset.prev) bankSelect.value = bankSelect.dataset.prev;
+    tipEl.textContent = i18n.exam_bank_block || "Switching question set is disabled during the exam.";
+    return;
+  }
+  // 非考試模式：更新 prev，並重開 session
+  if (bankSelect) bankSelect.dataset.prev = bankSelect.value || "all";
+  await startSession(modeSelect.value);
+});
+
+
+examCancelBtn?.addEventListener("click", () => {
+  closeExamReady();             // 關 modal，不開始
+  tipEl.textContent = i18n.exam_waiting || "Exam not started yet.";
+});
+
+examBeginBtn?.addEventListener("click", async () => {
+  if (isStarting) return;
+  isStarting = true; startBtn.disabled = true;
+  try {
+    await ensureDataLoaded();
+    closeExamReady();           // 關 modal
+    await startSession("exam"); // ✅ 真正開始考試、開始倒數、鎖語言
+  } catch (err) {
+    closeExamReady();
+    tipEl.textContent = "Failed to load: " + (err && err.message ? err.message : err);
+    console.error(err);
+  } finally {
+    isStarting = false; startBtn.disabled = false;
+  }
+});
 
 /* ===== i18n ===== */
 async function loadI18n(code) {
@@ -202,98 +289,108 @@ async function loadI18n(code) {
 
 /* ===== Data ===== */
 async function ensureDataLoaded() {
+  // 已載入就唔再重覆載
   if (allQuestions.length) return;
 
-  try { await loadI18n(lang); } catch { await loadI18n("en"); }
+  try {
+    // 先確保 i18n 可用
+    try { 
+      await loadI18n(lang); 
+    } catch { 
+      await loadI18n("en"); 
+    }
 
-  const res = await fetch(CSV_URL, { cache: "no-store", redirect: "follow" });
-  if (!res.ok) throw new Error("HTTP " + res.status + " for " + CSV_URL);
+    const res = await fetch(CSV_URL, { cache: "no-store", redirect: "follow" });
+    if (!res.ok) throw new Error("HTTP " + res.status + " for " + CSV_URL);
 
-  const blob = await res.blob();
-  const MAX_BYTES = 1000000;
-  if (blob.size > MAX_BYTES) throw new Error("CSV too large: " + blob.size + " bytes.");
+    const blob = await res.blob();
+    const MAX_BYTES = 1000000;
+    if (blob.size > MAX_BYTES) throw new Error("CSV too large: " + blob.size + " bytes.");
 
-  const text = await blob.text();
-  if (/<!doctype html>/i.test(text) || /<html[\s>]/i.test(text)) {
-    throw new Error("CSV_URL returned HTML, not CSV.");
+    const text = await blob.text();
+    if (/<!doctype html>/i.test(text) || /<html[\s>]/i.test(text)) {
+      throw new Error("CSV_URL returned HTML, not CSV.");
+    }
+    const lineCount = (text.match(/\r?\n/g) || []).length + 1;
+    if (lineCount > 10000) throw new Error("CSV has too many lines: " + lineCount);
+
+    allQuestions = parseCSV(text);
+
+    if (!allQuestions.length) {
+      tipEl.textContent = "No questions found in CSV.";
+    }
+  } catch (err) {
+    tipEl.textContent = "Failed to load questions: " + (err?.message || err);
+    throw err; // 交畀上層處理
   }
-  const lineCount = (text.match(/\r?\n/g) || []).length + 1;
-  if (lineCount > 10000) throw new Error("CSV has too many lines: " + lineCount);
-
-  allQuestions = parseCSV(text);
 }
 
-/* ===== Session ===== */
-async function startSession(mode) {
-  // reset
-  score = 0; wrong = 0; idx = 0; answered = false;
 
-  // 移除舊覆核面板
-  const oldPanel = document.getElementById(reviewContainerId);
-  if (oldPanel) oldPanel.remove();
-  reviewMode = false;
-  reviewIdx = 0;
 
-  examMode = (mode === "exam");
-  clearExamTimer();
 
-  // --- Bank 篩選（A/B/C/all）---
-  const bank = bankSelect ? (bankSelect.value || "all") : "all";
-  let candidate = allQuestions;
-  if (bank !== "all") {
-    const prefix = `Set ${bank}`;
-    candidate = allQuestions.filter(q => (q.topic || "").startsWith(prefix));
-  }
-  if (mode === "review") {
-    const ids = new Set(wrongIds);
-    candidate = candidate.filter(q => ids.has(q.id));
+function renderCurrent() {
+  updateMeta();
+
+  if (!deck.length) {
+    qEl.textContent = i18n.no_questions || "No questions available. Check questions.csv.";
+    optsEl.innerHTML = "";
+    navEl.classList.add("hidden");
+    flashBtns.classList.add("hidden");
+    return;
   }
 
-  // --- 只造一次 deck ---
-  if (mode === "exam") {
-    deck = shuffle(candidate.map(q => ({ ...q }))).slice(0, Math.min(24, candidate.length));
+  const q = deck[idx];
+  const qText   = (lang === "en" ? q.question_en : q.question_zh) || q.question_en;
+  const options = (lang === "en" ? q.options_en : q.options_zh) || q.options_en;
+  const mode    = modeSelect.value;
+
+  qEl.textContent = qText;
+
+  // Flash 模式：只顯示正確答案，禁用互動
+  let optsToRender = options;
+  let flashOnly = false;
+  if (mode === "flash") {
+    const ansIdx = q.answer_index;
+    optsToRender = [ options[ansIdx] ];
+    flashOnly = true;
+  }
+
+  const frag = document.createDocumentFragment();
+  optsToRender.forEach((opt, i) => {
+    const li = document.createElement("li");
+    li.textContent = opt;
+    li.setAttribute("role", "option");
+    if (flashOnly) {
+      li.classList.add("correct", "flash-answer");
+      li.setAttribute("aria-disabled", "true");
+      li.style.pointerEvents = "none";
+      li.style.cursor = "default";
+    } else {
+      li.setAttribute("data-idx", String(i));
+    }
+    frag.appendChild(li);
+  });
+  optsEl.innerHTML = "";
+  optsEl.appendChild(frag);
+
+  // 控制區
+  if (mode === "flash") {
+    flashBtns.classList.remove("hidden");
+    navEl.classList.add("hidden");
   } else {
-    deck = shuffle(candidate.map(q => ({ ...q })));
+    flashBtns.classList.add("hidden");
+    navEl.classList.remove("hidden");
+    if (mode !== "exam") answered = false;
   }
 
-  // 每題洗牌選項
-  deck.forEach(shuffleOptionsInPlace);
-
-  // --- 語言鎖定 / UI 設定 ---
-  if (examMode) {
-     if (lang !== "en") prevLangForExam = lang;
-  await loadI18n("en");   // 先確保 i18n 換好
-  setLanguage("en");
-  lockLanguage(true);
-
-    examAnswers = Array(deck.length).fill(null);
-    startExamTimer(45 * 60);
-
-    submitBtn.textContent = i18n.submit || "Submit";
-    submitBtn.classList.remove("hidden");
-    timerEl.classList.remove("hidden");
-    prevBtn.classList.remove("hidden");
-    skipBtn.classList.remove("hidden");
-    unansweredEl.classList.remove("hidden");
-    tipEl.textContent = i18n.tip_exam || "Exam mode: 24 questions, 45 minutes. Good luck!";
-    updateUnansweredUI();
-  } else {
-    lockLanguage(false);
-    if (prevLangForExam) { setLanguage(prevLangForExam); prevLangForExam = null; }
-    submitBtn.classList.add("hidden");
-    timerEl.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-    skipBtn.classList.add("hidden");
-    unansweredEl.classList.add("hidden");
-    tipEl.textContent =
-      (mode === "review")
-        ? (deck.length ? (i18n.tip_review || "Reviewing your wrong answers.") : (i18n.tip_no_review || "No wrong answers saved yet."))
-        : (mode === "flash" ? (i18n.tip_flash || "Flashcards mode: reveal then self-mark.") : "");
+  // Exam：還原已選
+  if (examMode && examAnswers[idx] != null) {
+    const sel = optsEl.querySelector('li[data-idx="' + examAnswers[idx] + '"]');
+    if (sel) sel.classList.add("selected");
   }
 
-  renderCurrent();
+  if (examMode) updateUnansweredUI();
 }
-
 
 
 /* 洗牌選項並同步中英 */
@@ -313,70 +410,83 @@ function shuffleOptionsInPlace(q) {
 }
 
 /* ===== Render ===== */
-function renderCurrent() {
-  updateMeta();
+async function startSession(mode) {
+  // === reset ===
+  score = 0; wrong = 0; idx = 0; answered = false;
 
-  if (!deck.length) {
-    qEl.textContent = i18n.no_questions || "No questions available. Check questions.csv.";
-    optsEl.innerHTML = "";
-    navEl.classList.add("hidden");
-    flashBtns.classList.add("hidden");
-    return;
+  // 移除舊覆核面板
+  const oldPanel = document.getElementById(reviewContainerId);
+  if (oldPanel) oldPanel.remove();
+  reviewMode = false;
+  reviewIdx = 0;
+
+  examMode = (mode === "exam");
+  clearExamTimer();
+
+  // === Bank 篩選（A/B/C/all）===
+  const bank = bankSelect ? (bankSelect.value || "all") : "all";
+  let candidate = allQuestions;
+  if (bank !== "all") {
+    const prefix = `Set ${bank}`;
+    candidate = allQuestions.filter(q => (q.topic || "").startsWith(prefix));
+  }
+  if (mode === "review") {
+    const ids = new Set(wrongIds);
+    candidate = candidate.filter(q => ids.has(q.id));
   }
 
-  const q = deck[idx];
-  const qText   = (lang === "en" ? q.question_en : q.question_zh) || q.question_en;
-  const options = (lang === "en" ? q.options_en : q.options_zh) || q.options_en;
-  const mode    = modeSelect.value;
-
-  qEl.textContent = qText;
-
-  // ★ 依模式產生要顯示的選項
-  let optsToRender = options;
-  let flashOnly = false;
-  if (mode === "flash") {
-    const ansIdx = q.answer_index;
-    optsToRender = [ options[ansIdx] ];   // 只顯示正確答案
-    flashOnly = true;
-  }
-
-  const frag = document.createDocumentFragment();
-  optsToRender.forEach((opt, i) => {
-    const li = document.createElement("li");
-    li.textContent = opt;
-    li.setAttribute("role", "option");
-    // 在 flash 模式下，只有一個正確答案，直接標記成 correct 並禁用互動
-    if (flashOnly) {
-      li.classList.add("correct", "flash-answer");
-      li.setAttribute("aria-disabled", "true");
-      li.style.pointerEvents = "none";
-      li.style.cursor = "default";
-    } else {
-      li.setAttribute("data-idx", String(i));
-    }
-    frag.appendChild(li);
-  });
-  optsEl.innerHTML = "";
-  optsEl.appendChild(frag);
-
-  // ★ 切換控制區
-  if (mode === "flash") {
-    flashBtns.classList.remove("hidden");
-    navEl.classList.add("hidden");
+  // === 造 deck ===
+  if (mode === "exam") {
+    deck = shuffle(candidate.map(q => ({ ...q }))).slice(0, Math.min(24, candidate.length));
   } else {
-    flashBtns.classList.add("hidden");
-    navEl.classList.remove("hidden");
-    if (mode !== "exam") answered = false;
+    deck = shuffle(candidate.map(q => ({ ...q })));
+  }
+  deck.forEach(shuffleOptionsInPlace);
+
+  // === 語言／UI ===
+  const exitBtn = document.querySelector("[data-action='exit-exam']");
+  if (examMode) {
+    // 只在考試模式顯示 Exit
+    exitBtn?.classList.remove("hidden");
+
+    enableUnloadWarning();
+    if (lang !== "en") prevLangForExam = lang;
+    setLanguage("en");
+    lockLanguage(true);
+
+    examAnswers = Array(deck.length).fill(null);
+    startExamTimer(45 * 60);
+
+    submitBtn.textContent = i18n.submit || "Submit";
+    submitBtn.classList.remove("hidden");
+    timerEl.classList.remove("hidden");
+    prevBtn.classList.remove("hidden");
+    skipBtn.classList.remove("hidden");
+    unansweredEl.classList.remove("hidden");
+    tipEl.textContent = i18n.tip_exam || "Exam mode: 24 questions, 45 minutes. Good luck!";
+    updateUnansweredUI();
+  } else {
+    // 非考試模式隱藏 Exit
+    exitBtn?.classList.add("hidden");
+
+    disableUnloadWarning();
+    lockLanguage(false);
+    if (prevLangForExam) { setLanguage(prevLangForExam); prevLangForExam = null; }
+    submitBtn.classList.add("hidden");
+    timerEl.classList.add("hidden");
+    prevBtn.classList.add("hidden");
+    skipBtn.classList.add("hidden");
+    unansweredEl.classList.add("hidden");
+    tipEl.textContent =
+      (mode === "review")
+        ? (deck.length ? (i18n.tip_review || "Reviewing your wrong answers.") : (i18n.tip_no_review || "No wrong answers saved yet."))
+        : (mode === "flash" ? (i18n.tip_flash || "Flashcards mode: reveal then self-mark.") : "");
   }
 
-  // Exam：還原已選中
-  if (examMode && examAnswers[idx] != null) {
-    const sel = optsEl.querySelector('li[data-idx="' + examAnswers[idx] + '"]');
-    if (sel) sel.classList.add("selected");
-  }
-
-  if (examMode) updateUnansweredUI();
+  renderCurrent();
 }
+
+
 
 
 function gotoPrev() {
@@ -428,7 +538,55 @@ function finishSession(inFlash) {
   navEl.classList.add("hidden");
   flashBtns.classList.add("hidden");
   updateMeta(true);
+
+  // 非考試結束的安全保險：確保移除關頁警示
+  disableUnloadWarning();
 }
+
+function exitExamEarly() {
+  if (!examMode) return;
+
+  const answeredCnt = examAnswers.filter(v => v != null).length;
+  const msg = (i18n.exam_exit_confirm || "Exit the exam now?")
+            + (answeredCnt ? ` (${answeredCnt} answered will be discarded)` : "");
+  const ok = window.confirm(msg);
+  if (!ok) return;
+
+  // 清理計時、關頁警示
+  clearExamTimer();
+  disableUnloadWarning();
+
+  // 解鎖語言，還原考試前語言
+  lockLanguage(false);
+  if (prevLangForExam) {
+    lang = prevLangForExam;
+    prevLangForExam = null;
+    localStorage.setItem(LS_LANG_KEY, lang);
+    if (langSelect) langSelect.value = lang;
+    const t = document.getElementById("langToggle");
+    if (t) t.checked = (lang === "en");
+    try { loadI18n(lang); } catch {}
+  }
+
+  // UI 收尾
+  submitBtn.classList.add("hidden");
+  timerEl.classList.add("hidden");
+  prevBtn.classList.add("hidden");
+  skipBtn.classList.add("hidden");
+  unansweredEl.classList.add("hidden");
+
+  // 還原狀態
+  examMode = false;
+  examAnswers = [];
+  tipEl.textContent = i18n.exam_cancelled || "Exam cancelled. You can start again anytime.";
+
+  // 回到練習
+  if (modeSelect) modeSelect.value = "quiz";
+  deck = [];
+  renderCurrent();
+}
+
+
 
 /* ===== Exam timer & submit ===== */
 function startExamTimer(seconds) {
@@ -594,7 +752,7 @@ async function submitExam(force = false) {
   const title = pass ? (i18n.pass || "PASS") : (i18n.fail || "FAIL");
   qEl.textContent = `${title} — ${correctCnt}/${total}`;
 
-  // === 顯示「全部題目」：正確綠、錯誤紅、未作答當錯 ===
+  // 顯示所有題目（正確綠、錯誤紅、未作答當錯）
   const ol = document.createElement("ol");
   deck.forEach((q, i) => {
     const yourIdx = examAnswers[i];
@@ -630,6 +788,31 @@ async function submitExam(force = false) {
   openBtn.onclick = () => buildReviewPanel();
   optsEl.appendChild(openBtn);
 
+  // === 動作按鈕 ===
+const actions = document.createElement("div");
+actions.className = "actions";
+actions.style.marginTop = "12px";
+
+// 返回練習
+const btnPractice = document.createElement("button");
+btnPractice.type = "button";
+btnPractice.textContent = i18n.back_to_practice || "Back to Practice";
+btnPractice.style.marginRight = "8px";
+btnPractice.onclick = () => {
+  if (modeSelect) modeSelect.value = "quiz";
+  startSession("quiz").catch(()=>{});
+};
+actions.appendChild(btnPractice);
+
+// 立即重考
+const btnRetake = document.createElement("button");
+btnRetake.type = "button";
+btnRetake.textContent = i18n.retake_exam || "Retake Exam";
+btnRetake.onclick = () => startSession("exam");
+actions.appendChild(btnRetake);
+
+optsEl.appendChild(actions);
+
   // 收尾 UI
   navEl.classList.add("hidden");
   flashBtns.classList.add("hidden");
@@ -639,6 +822,9 @@ async function submitExam(force = false) {
   tipEl.textContent = pass
     ? (i18n.exam_pass_tip || "Congratulations! You passed the mock exam.")
     : (i18n.exam_fail_tip || "Keep practicing. Review the incorrect questions above.");
+
+  // 非考試結束的安全保險：確保移除關頁警示
+  disableUnloadWarning();
 
   // 考完試：恢復語言控制，如有先前語言則還原
   lockLanguage(false);
@@ -651,9 +837,18 @@ async function submitExam(force = false) {
     if (t) t.checked = (lang === "en");
     try { await loadI18n(lang); } catch {}
   }
+  examMode = false;
+
+  submitBtn.classList.add("hidden");
+prevBtn.classList.add("hidden");
+skipBtn.classList.add("hidden");
+
+  document.querySelector("[data-action='exit-exam']")?.classList.add("hidden");
+
+  // 保持 examMode=true（你可以依需要改為 false）
+  // 如果想交卷後即離開考試模式，可加：
+  // examMode = false;
 }
-
-
 
 
 
