@@ -13,20 +13,19 @@
   --card: #fff;
 }
 
+/* 全局盒模型 */
+*, *::before, *::after { box-sizing: border-box; }
+
 /* ===== 全局背景（倫敦油畫化） ===== */
+/* FIX: 用多層 background 疊白紗層，避免 ::before 被 body 背景蓋住 */
 body {
   margin: 0;
   font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, "PingFang TC","Heiti TC",sans-serif;
   color: var(--ink);
-  background: url("bg-london-oil.jpg") center/cover no-repeat fixed;
+  background:
+    linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)),
+    url("bg-london-oil.jpg") center/cover no-repeat fixed;
   backdrop-filter: blur(2px) saturate(120%) contrast(110%);
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.65);
-  z-index: -1;
 }
 
 /* ===== 頂部 ===== */
@@ -39,6 +38,7 @@ body::before {
   padding: 16px 20px;
   background: var(--flag-blue);
   border-bottom: 1px solid #e5e7eb;
+  color: #fff; /* FIX: 深藍底改白字，提升對比 */
 }
 
 /* ===== 標題 ===== */
@@ -63,6 +63,7 @@ body::before {
   border: 1px solid #d1d5db;
   border-radius: 8px;
   background: #fff;
+  color: #111;
 }
 .controls button {
   background: var(--accent);
@@ -71,9 +72,10 @@ body::before {
   cursor: pointer;
 }
 .controls button:hover { filter: brightness(1.1); }
+.controls select:disabled, .controls button:disabled { opacity: .6; cursor: not-allowed; }
 
 /* Toggle Switch */
-.lang { display:inline-block; position:relative; }
+.lang { display:inline-block; position:relative; user-select: none; }
 .lang input { display:none; }
 
 .lang .switch {
@@ -87,11 +89,10 @@ body::before {
   cursor:pointer;
   position:relative;
   transition:background .3s;
-  padding:0 10px;     /* 讓左右文字對齊 */
+  padding:0 10px;
   color:#fff;
   font-weight:700;
   overflow:hidden;
-  box-sizing:border-box; /* 防止 padding 影響尺寸計算 */
 }
 
 .lang .switch::after{
@@ -114,7 +115,6 @@ body::before {
 .lang input:checked + .switch .off { opacity:.6; }
 .lang input:not(:checked) + .switch .on { opacity:.6; }
 .lang input:not(:checked) + .switch .off { opacity:1; }
-
 
 /* Start */
 #startBtn { background: var(--flag-red); color:#fff; border-color: transparent; }
@@ -150,6 +150,8 @@ body::before {
 .options li.wrong   { border-color: var(--bad); background: #fdecec; color: #7a0f20; font-weight: 600; }
 .options li.correct::before { content: "✔ "; font-weight: 700; color: var(--ok); }
 .options li.wrong::before   { content: "✘ "; font-weight: 700; color: var(--bad); }
+/* Flash 模式答案微樣式 */
+.options li.flash-answer { font-style: italic; }
 
 /* ===== Buttons ===== */
 .flash-btns button, .nav button {
@@ -192,6 +194,14 @@ body::before {
 .review ol li.correct { border: 2px solid var(--ok); background: #eaf7f1; color: #11623f; }
 .review ol li.wrong   { border: 2px solid var(--bad); background: #fdecec; color: #7a0f20; }
 
+/* FIX: 總結畫面「動作按鈕」樣式補齊 */
+.review .actions { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+.review .actions button {
+  padding: 10px 18px; border-radius: 8px; border: 1px solid transparent;
+  background: var(--accent); color: #fff; font-weight: 700; cursor: pointer;
+}
+.review .actions button:hover { background: #1e3a8a; }
+
 /* ===== 手機優化 ===== */
 @media (max-width: 600px) {
   #title { font-size: 28px; margin: 10px auto; padding: 6px 12px; }
@@ -221,6 +231,7 @@ body::before {
   background: rgba(0,0,0,.45);
   display: grid; place-items: center;
   z-index: 999;
+  backdrop-filter: blur(2px); /* 少少霧化 */
 }
 .modal-dialog {
   width: min(520px, 92vw);

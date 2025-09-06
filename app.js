@@ -16,7 +16,10 @@ function setLanguage(code) {
   }
 
   // 切語言後刷新文案/題目
-  loadI18n(lang).catch(()=>{}).finally(() => { if (deck.length) renderCurrent(); });
+  loadI18n(lang).catch(()=>{}).finally(() => {
+    // 只有唔係總結畫面先重新 render 題目
+    if (deck.length && !inSummary) renderCurrent();
+  });
 }
 
 function lockLanguage(lock) {
@@ -54,12 +57,10 @@ const examReadyEl   = document.getElementById("examReady");
 const examBeginBtn  = document.getElementById("examBeginBtn");
 const examCancelBtn = document.getElementById("examCancelBtn");
 
-
 /* ===== State ===== */
 let lang = localStorage.getItem(LS_LANG_KEY) || "en";
 let prevLangForExam = null; // 記錄考試前的語言
 if (langSelect) langSelect.value = lang;
-
 
 let i18n = {};
 let allQuestions = [];
@@ -76,6 +77,7 @@ let examMode = false;
 let examAnswers = [];
 let examTimerId = null;
 let examDeadline = 0;
+let inSummary = false; // 是否處於總結畫面（交卷後的成績+清單）
 
 /* ===== 防止考試中誤關閉頁面 ===== */
 function enableUnloadWarning() {
@@ -95,7 +97,6 @@ function closeExamReady() {
   examReadyEl?.classList.add("hidden");
 }
 
-
 function disableUnloadWarning() {
   window.onbeforeunload = null;
 }
@@ -106,7 +107,6 @@ let reviewIdx = 0; // 0..deck.length-1
 
 // 動態建立覆題面板的容器（交卷時會填充）
 const reviewContainerId = "reviewPanel";
-
 
 /* ===== Init ===== */
 window.addEventListener("DOMContentLoaded", async () => {
@@ -145,7 +145,6 @@ if (langToggleEl) {
     langToggleEl.nextElementSibling?.setAttribute("aria-checked", langToggleEl.checked ? "true" : "false");
   });
 }
-
 
 /* Single delegation for option clicks */
 optsEl.onclick = (e) => {
@@ -188,7 +187,6 @@ optsEl.onclick = (e) => {
   updateMeta();
 };
 
-
 nextBtn.addEventListener("click", () => gotoNext(false));
 nextCardBtn?.addEventListener("click", () => gotoNext(true));
 submitBtn?.addEventListener("click", () => submitExam(false));
@@ -219,7 +217,6 @@ startBtn.addEventListener("click", async () => {
   }
 });
 
-
 modeSelect.addEventListener("change", async () => {
   if (examMode) { 
     modeSelect.value = "exam";
@@ -243,7 +240,6 @@ bankSelect?.addEventListener("change", async () => {
   if (bankSelect) bankSelect.dataset.prev = bankSelect.value || "all";
   await startSession(modeSelect.value);
 });
-
 
 examCancelBtn?.addEventListener("click", () => {
   closeExamReady();             // 關 modal，不開始
@@ -325,9 +321,6 @@ async function ensureDataLoaded() {
   }
 }
 
-
-
-
 function renderCurrent() {
   updateMeta();
 
@@ -392,7 +385,6 @@ function renderCurrent() {
   if (examMode) updateUnansweredUI();
 }
 
-
 /* 洗牌選項並同步中英 */
 function shuffleOptionsInPlace(q) {
   const opts = q.options_en.map((en, i) => ({
@@ -412,6 +404,7 @@ function shuffleOptionsInPlace(q) {
 /* ===== Render ===== */
 async function startSession(mode) {
   // === reset ===
+  inSummary = false;
   score = 0; wrong = 0; idx = 0; answered = false;
 
   // 移除舊覆核面板
@@ -445,11 +438,13 @@ async function startSession(mode) {
 
   // === 語言／UI ===
   const exitBtn = document.querySelector("[data-action='exit-exam']");
+
   if (examMode) {
     // 只在考試模式顯示 Exit
     exitBtn?.classList.remove("hidden");
 
     enableUnloadWarning();
+
     if (lang !== "en") prevLangForExam = lang;
     setLanguage("en");
     lockLanguage(true);
@@ -485,9 +480,6 @@ async function startSession(mode) {
 
   renderCurrent();
 }
-
-
-
 
 function gotoPrev() {
   if (!deck.length) return;
@@ -574,6 +566,7 @@ function exitExamEarly() {
   prevBtn.classList.add("hidden");
   skipBtn.classList.add("hidden");
   unansweredEl.classList.add("hidden");
+  inSummary = false;
 
   // 還原狀態
   examMode = false;
@@ -585,8 +578,6 @@ function exitExamEarly() {
   deck = [];
   renderCurrent();
 }
-
-
 
 /* ===== Exam timer & submit ===== */
 function startExamTimer(seconds) {
@@ -626,8 +617,7 @@ function updateUnansweredUI() {
   unansweredEl.textContent = `${n} ${i18n.unanswered || "unanswered"}`;
 }
 
-/* force=true 時不彈確認（例如時間到自動交卷） */
-// === 覆題頁 ===
+/* === 覆題頁 === */
 function buildReviewPanel() {
   let panel = document.getElementById(reviewContainerId);
   if (!panel) {
@@ -650,7 +640,7 @@ function buildReviewPanel() {
     <button id="rvNext" aria-label="Next">${i18n.next || "Next"}</button>
     <button id="rvExit" aria-label="Close" style="margin-left:8px;">${i18n.close || "Close"}</button>
   `;
-  head.appendChild(title); head.appendChild(ctrls); // ✅ 這行修正
+  head.appendChild(title); head.appendChild(ctrls);
 
   const qBox = document.createElement("div"); qBox.id = "rvQuestion";
   const ul   = document.createElement("ul");  ul.id = "rvOptions"; ul.className = "options";
@@ -789,31 +779,38 @@ async function submitExam(force = false) {
   optsEl.appendChild(openBtn);
 
   // === 動作按鈕 ===
-const actions = document.createElement("div");
-actions.className = "actions";
-actions.style.marginTop = "12px";
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  actions.style.marginTop = "12px";
 
-// 返回練習
-const btnPractice = document.createElement("button");
-btnPractice.type = "button";
-btnPractice.textContent = i18n.back_to_practice || "Back to Practice";
-btnPractice.style.marginRight = "8px";
-btnPractice.onclick = () => {
-  if (modeSelect) modeSelect.value = "quiz";
-  startSession("quiz").catch(()=>{});
-};
-actions.appendChild(btnPractice);
+  // 返回練習
+  const btnPractice = document.createElement("button");
+  btnPractice.type = "button";
+  btnPractice.textContent = i18n.back_to_practice || "Back to Practice";
+  btnPractice.style.marginRight = "8px";
+  btnPractice.onclick = () => {
+    inSummary = false;
+    if (modeSelect) modeSelect.value = "quiz";
+    startSession("quiz").catch(()=>{});
+  };
+  actions.appendChild(btnPractice);
 
-// 立即重考
-const btnRetake = document.createElement("button");
-btnRetake.type = "button";
-btnRetake.textContent = i18n.retake_exam || "Retake Exam";
-btnRetake.onclick = () => startSession("exam");
-actions.appendChild(btnRetake);
+  // 立即重考
+  const btnRetake = document.createElement("button");
+  btnRetake.type = "button";
+  btnRetake.textContent = i18n.retake_exam || "Retake Exam";
+  btnRetake.onclick = () => {
+    inSummary = false;
+    startSession("exam");
+  };
+  actions.appendChild(btnRetake);
 
-optsEl.appendChild(actions);
+  optsEl.appendChild(actions);
 
-  // 收尾 UI
+  // 交卷後進入總結狀態（避免切語言時重畫題目）
+  inSummary = true;
+
+  // —— 收尾 UI ——
   navEl.classList.add("hidden");
   flashBtns.classList.add("hidden");
   clearExamTimer();
@@ -823,10 +820,10 @@ optsEl.appendChild(actions);
     ? (i18n.exam_pass_tip || "Congratulations! You passed the mock exam.")
     : (i18n.exam_fail_tip || "Keep practicing. Review the incorrect questions above.");
 
-  // 非考試結束的安全保險：確保移除關頁警示
+  // 安全：移除關頁警示
   disableUnloadWarning();
 
-  // 考完試：恢復語言控制，如有先前語言則還原
+  // 恢復語言控制（如有之前語言）
   lockLanguage(false);
   if (prevLangForExam) {
     lang = prevLangForExam;
@@ -837,20 +834,19 @@ optsEl.appendChild(actions);
     if (t) t.checked = (lang === "en");
     try { await loadI18n(lang); } catch {}
   }
+
+  // ✅ 正式離開考試模式
   examMode = false;
 
+  // 收起考試相關掣
   submitBtn.classList.add("hidden");
-prevBtn.classList.add("hidden");
-skipBtn.classList.add("hidden");
-
+  prevBtn.classList.add("hidden");
+  skipBtn.classList.add("hidden");
   document.querySelector("[data-action='exit-exam']")?.classList.add("hidden");
 
-  // 保持 examMode=true（你可以依需要改為 false）
-  // 如果想交卷後即離開考試模式，可加：
-  // examMode = false;
+  // 同步下拉選去練習模式（UI 觀感一致）
+  if (modeSelect) modeSelect.value = "quiz";
 }
-
-
 
 /* ===== Meta & wrong answers ===== */
 function updateMeta(done) {
@@ -882,7 +878,6 @@ function addWrong(id) {
     persistWrongIds();
   }
 }
-
 
 /* ===== CSV parsing & utils ===== */
 function parseCSV(text) {
@@ -941,6 +936,4 @@ function shuffle(arr) {
     arr[j] = t;
   }
   return arr;
-
-  
 }

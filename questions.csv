@@ -71,3 +71,51 @@ id,topic,question_en,question_zh,options_en,options_zh,answer_index
 70,Set C - Ch3 History,"Which 20th‑century British invention allows exact, non‑invasive imaging of internal organs?",20世紀哪項英國發明能夠對內臟進行精準、非侵入式成像？,X‑ray | MRI scanner (Sir Peter Mansfield co‑inventor) | Ultrasound | CT scan,X光 | 核磁共振掃描儀（彼得·曼斯菲爾德共同發明） | 超聲波 | 電腦斷層,1
 71,Set C - Ch1 Values,Which statement about the Life in the UK handbook is correct?,關於《英國生活》手冊，下列哪項正確？,Only Chapter 1 is testable | Questions are based on all parts of the handbook | Only dates are tested | Only laws are tested,只有第一章會考 | 題目基於整本手冊 | 只考日期 | 只考法律,1
 72,Set C - Ch2 UK,Which statement about devolved institutions is correct?,關於權力下放機構，下列哪項正確？,"Scotland, Wales and Northern Ireland have parliaments/assemblies with defined powers | Only England has a parliament | Devolution ended in 1901 | The UK Parliament no longer exists",蘇格蘭、威爾士、北愛有各自的議會/大會並擁有特定權力 | 只有英格蘭有議會 | 權力下放於1901年終止 | 英國議會已不存在,0
+73,Set D,How many nations make up the United Kingdom?,英國由多少個「構成國」組成？,3 | 4 | 5 | 6,3 | 4 | 5 | 6,1
+74,Set D,What is the capital city of Scotland?,蘇格蘭的首都是哪一個城市？,Edinburgh | Cardiff | Belfast | Manchester,愛丁堡 | 加的夫 | 貝爾法斯特 | 曼徹斯特,0
+75,Set D,Which patron saint is associated with Wales?,與威爾士相關的主保聖人是誰？,St George | St Andrew | St David | St Patrick,聖喬治 | 聖安德魯 | 聖大衛 | 聖派屈克,2
+76,Set D,What are the colours of the Union Flag (Union Jack)?,聯合旗（Union Jack）的顏色為何？,Red white and blue | Green white and orange | Red yellow and black | Blue white and gold,紅白藍 | 綠白橙 | 紅黃黑 | 藍白金,0
+77,Set D,Where is the UK Prime Minister’s official residence?,英國首相的官邸在哪裡？,10 Downing Street | Buckingham Palace | Windsor Castle | Holyroodhouse,唐寧街10號 | 白金漢宮 | 溫莎堡 | 荷里路德宮,0
+78,Set D,What are the two houses of the UK Parliament?,英國議會由哪兩院組成？,House of Commons and House of Lords | Senate and Assembly | Diet and Council | Congress and Senate,下議院與上議院 | 參議院與議會 | 國會與評議會 | 眾議院與參議院,0
+79,Set D,In which year was the Magna Carta signed?,《大憲章》簽署於哪一年？,1066 | 1215 | 1689 | 1707,1066年 | 1215年 | 1689年 | 1707年,1
+80,Set D,The Battle of Hastings took place in which year?,黑斯廷斯之戰發生在何年？,1066 | 1314 | 1415 | 1642,1066年 | 1314年 | 1415年 | 1642年,0
+81,Set D,Which monarch was on the throne when the Spanish Armada was defeated in 1588?,1588年西班牙無敵艦隊被擊敗時的君主是誰？,Henry VIII | Elizabeth I | George III | Victoria,亨利八世 | 伊麗莎白一世 | 喬治三世 | 維多利亞女王,1
+82,Set D,The Acts of Union in 1707 created which state?,1707年的《聯合法案》建立了哪一個國家？,United Kingdom of Great Britain and Ireland | Kingdom of Great Britain | United Kingdom of England and Wales | British Empire,大不列顛及愛爾蘭聯合王國 | 大不列顛王國 | 英格蘭及威爾士聯合王國 | 大英帝國,1
+83,Set D,In which year did the Great Fire of London occur?,倫敦大火發生於哪一年？,1558 | 1588 | 1666 | 1707,1558年 | 1588年 | 1666年 | 1707年,2
+84,Set D,What did the Bill of Rights (1689) confirm?,《權利法案》（1689）主要確認了什麼？,The power of Parliament over the monarch | The creation of the NHS | Universal suffrage for all adults | The union with Ireland,議會權力高於君主 | 成立國民保健服務 | 所有成年人普選 | 與愛爾蘭聯合,0
+85,Set D,Which country first industrialised during the Industrial Revolution?,在工業革命中率先工業化的國家是？,Britain | France | Germany | United States,英國 | 法國 | 德國 | 美國,0
+86,Set D,When did the First World War begin and end?,第一次世界大戰的起訖年份為何？,1914–1918 | 1912–1916 | 1939–1945 | 1900–1905,1914–1918年 | 1912–1916年 | 1939–1945年 | 1900–1905年,0
+87,Set D,In which year was the National Health Service (NHS) founded?,國民保健服務（NHS）成立於哪一年？,1939 | 1945 | 1948 | 1952,1939年 | 1945年 | 1948年 | 1952年,2
+88,Set D,In 1928, what changed about voting rights in the UK?,1928年英國的投票權出現了什麼改變？,Women gained the vote at 18 | Women got the vote on the same terms as men | Voting became compulsory | Only property owners could vote,女性可於18歲投票 | 女性獲得與男性相同的投票權 | 投票成為強制 | 只有產權者能投票,1
+89,Set D,When was the modern Scottish Parliament established?,現代蘇格蘭議會是何年設立的？,1979 | 1997 | 1999 | 2007,1979年 | 1997年 | 1999年 | 2007年,2
+90,Set D,Where does the Northern Ireland Assembly sit?,北愛爾蘭議會在哪裡開會？,Cardiff Bay | Stormont | Westminster | Holyrood,卡地夫灣 | 斯托蒙特 | 威斯敏斯特 | 荷里路德,1
+91,Set D,What is the UK’s currency?,英國使用哪一種貨幣？,Euro | Pound sterling | Dollar | Crown,歐元 | 英鎊 | 美元 | 克朗,1
+92,Set D,How many people usually sit on a jury in England and Wales?,在英格蘭與威爾士，陪審團通常有多少人？,10 | 11 | 12 | 15,10人 | 11人 | 12人 | 15人,2
+93,Set D,What is the minimum age to buy alcohol in the UK?,在英國購買酒精飲品的最低年齡是？,16 | 17 | 18 | 21,16歲 | 17歲 | 18歲 | 21歲,2
+94,Set D,What does “Big Ben” actually refer to?,「大笨鐘」實際上指的是？,The whole clock tower | The bell inside the clock | The Palace of Westminster | The clock face only,整座鐘樓 | 鐘樓內的大鐘 | 威斯敏斯特宮 | 只有錶面,1
+95,Set D,What is the national flower of England?,英格蘭的國花是什麼？,Thistle | Rose | Daffodil | Shamrock,薊花 | 玫瑰 | 黃水仙 | 酢漿草,1
+96,Set D,Which statement best describes the UK’s system of government?,下列何者最能描述英國的政體？,A constitutional monarchy with a parliamentary democracy | A presidential republic | A federal presidential system | A single-party state,立憲君主制兼議會民主 | 總統共和制 | 聯邦總統制 | 一黨制國家,0
+97,Set E,Who formally appoints the UK Prime Minister?,誰會正式任命英國首相？,The Monarch | The Speaker | The Cabinet Secretary | The Lord Chancellor,君主 | 下議院議長 | 內閣秘書長 | 大法官,0
+98,Set E,At least how often must general elections be held in the UK?,英國至少多久要舉行一次大選？,Every three years | Every five years | Every seven years | Every ten years,每三年 | 每五年 | 每七年 | 每十年,1
+99,Set E,Who selects members of the Cabinet?,誰挑選內閣成員？,The Prime Minister | The Monarch | The Civil Service | The House of Lords,首相 | 君主 | 文官體系 | 上議院,0
+100,Set E,How are Members of Parliament (MPs) elected?,下議院議員（MP）是如何產生的？,By local constituencies in a general election | Appointed by the PM | Elected by the Lords | Chosen by the Monarch,在大選中由各地方選區選出 | 由首相任命 | 由上議院選出 | 由君主挑選,0
+101,Set E,What was decided in the UK’s 2016 referendum?,2016年公投中，英國作出了哪項決定？,To remain in the EU | To leave the EU | To adopt the euro | To become a republic,留在歐盟 | 脫離歐盟 | 採用歐元 | 轉為共和制,1
+102,Set E,What is a life peer in the House of Lords?,上議院中的「終身貴族」是指？,A member appointed for life without hereditary title | A hereditary noble | A bishop | An elected peer,終身任命但不世襲的成員 | 世襲貴族 | 主教 | 選舉產生的貴族,0
+103,Set E,Which matters are devolved to Scotland?,下列哪一項屬於蘇格蘭的移交權限？,Education and health | Defence and foreign affairs | Currency and immigration | Nuclear policy,教育與醫療 | 國防與外交 | 貨幣與移民 | 核政策,0
+104,Set E,Where are the Crown Jewels kept?,英國王冠寶器收藏於哪裡？,Tower of London | British Museum | Windsor Castle | Buckingham Palace,倫敦塔 | 大英博物館 | 溫莎堡 | 白金漢宮,0
+105,Set E,Where is the Lake District located?,「湖區」位於哪個地區？,England | Scotland | Wales | Northern Ireland,英格蘭 | 蘇格蘭 | 威爾士 | 北愛爾蘭,0
+106,Set E,What is the highest mountain in the UK?,英國最高峰是哪一座？,Ben Nevis | Snowdon | Scafell Pike | Slieve Donard,本尼維斯峰 | 斯諾登山 | 斯卡費爾峰 | 斯利夫多納德,0
+107,Set E,Which court in England and Wales hears serious criminal cases?,在英格蘭與威爾士，哪個法院審理重大刑事案件？,Crown Court | Magistrates’ Court | County Court | Family Court,皇家刑事法院 | 治安法庭 | 郡法院 | 家事法院,0
+108,Set E,What symbol is on the flag of Wales?,威爾士國旗上的是哪個圖案？,A red dragon | A white rose | A golden harp | A black eagle,紅龍 | 白玫瑰 | 金色豎琴 | 黑鷹,0
+109,Set E,What is the minimum driving age for a car in the UK (most cases)?,在英國（多數情況），小客車駕照的最低年齡是？,16 | 17 | 18 | 21,16歲 | 17歲 | 18歲 | 21歲,1
+110,Set E,On which date is Christmas Day celebrated in the UK?,英國的聖誕節是幾月幾號？,24 December | 25 December | 26 December | 1 January,12月24日 | 12月25日 | 12月26日 | 1月1日,1
+111,Set E,What is Boxing Day?,何謂「節禮日」（Boxing Day）？,26 December public holiday | 24 December market day | First Monday of May | 31 December festival,12月26日的公眾假期 | 12月24日的市集日 | 5月第一個星期一 | 12月31日慶典日,0
+112,Set E,What is the UK’s central bank?,英國的中央銀行是？,Bank of England | Bank of Scotland | Royal Bank | National Savings,英格蘭銀行 | 蘇格蘭銀行 | 皇家銀行 | 國民儲蓄,0
+113,Set E,How is the BBC mainly funded?,BBC 主要的資金來源為何？,TV licence fee | Income tax | Advertising only | Lottery fund,電視牌照費 | 所得稅 | 只靠廣告 | 樂透基金,0
+114,Set E,The White Cliffs are a landmark near which town?,著名的白色懸崖位於哪個城鎮附近？,Dover | Brighton | Blackpool | Plymouth,多佛 | 布萊頓 | 黑池 | 普利茅斯,0
+115,Set E,Which is a Celtic language of the UK?,以下哪一種屬於英國的凱爾特語言？,Welsh | English | Dutch | Danish,威爾士語 | 英語 | 荷蘭語 | 丹麥語,0
+116,Set E,Which sport, played with a bat and ball and wickets, originated in Britain?,哪項使用球棒、球與三柱門的運動源自英國？,Cricket | Baseball | Hockey | Rugby,板球 | 棒球 | 曲棍球 | 橄欖球,0
+117,Set E,Who wrote the play “Hamlet”?,《哈姆雷特》的作者是誰？,William Shakespeare | Charles Dickens | Jane Austen | George Orwell,威廉·莎士比亞 | 狄更斯 | 珍·奧斯汀 | 奧威爾,0
+118,Set E,Where is Stonehenge located?,巨石陣位於哪個郡？,Wiltshire | Kent | Yorkshire | Norfolk,威爾特郡 | 肯特郡 | 約克郡 | 諾福克郡,0
+119,Set E,What is the national flower of Scotland?,蘇格蘭的國花是什麼？,Thistle | Rose | Shamrock | Daffodil,薊花 | 玫瑰 | 酢漿草 | 黃水仙,0
+120,Set E,When is St Patrick’s Day celebrated in the UK (Northern Ireland)?,英國（北愛爾蘭）在哪一天慶祝聖派屈克日？,17 March | 1 March | 23 April | 30 November,3月17日 | 3月1日 | 4月23日 | 11月30日,0
