@@ -13,12 +13,12 @@
     <div class="controls">
       <!-- 語言切換：注意 class 用 .lang 以配合 CSS -->
       <label class="lang">
-  <input type="checkbox" id="langToggle" />
-  <span class="switch" role="switch" aria-checked="false" aria-label="Language">
-    <span class="on">EN</span>
-    <span class="off">中文</span>
-  </span>
-</label>
+        <input type="checkbox" id="langToggle" />
+        <span class="switch" role="switch" aria-checked="false" aria-label="Language">
+          <span class="on">EN</span>
+          <span class="off">中文</span>
+        </span>
+      </label>
 
       <!-- 題庫組別 -->
       <label class="bank">
@@ -28,8 +28,10 @@
           <option value="A" data-i18n-opt="bank_a">Set A</option>
           <option value="B" data-i18n-opt="bank_b">Set B</option>
           <option value="C" data-i18n-opt="bank_c">Set C</option>
-          <option value="D">Set D</option>
-          <option value="E">Set E</option>
+          <option value="D" data-i18n-opt="bank_d">Set D</option>
+          <option value="E" data-i18n-opt="bank_e">Set E</option>
+          <option value="F" data-i18n-opt="bank_f">Set F</option>
+          <option value="G" data-i18n-opt="bank_g">Set G</option>
         </select>
       </label>
 
@@ -49,21 +51,21 @@
   </header>
 
   <!-- Exam Ready Modal -->
-<div id="examReady" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="examReadyTitle">
-  <div class="modal-dialog">
-    <h3 id="examReadyTitle" style="margin-top:0;">Mock Exam — Ready?</h3>
-    <ul class="rules">
-      <li>24 questions</li>
-      <li>45 minutes timer</li>
-      <li>Language locked to English</li>
-      <li>You can navigate Previous / Next / Skip</li>
-    </ul>
-    <div class="modal-actions">
-      <button id="examCancelBtn" class="btn-secondary">Cancel</button>
-      <button id="examBeginBtn" class="btn-primary">I’m ready, begin</button>
+  <div id="examReady" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="examReadyTitle">
+    <div class="modal-dialog">
+      <h3 id="examReadyTitle" style="margin-top:0;">Mock Exam — Ready?</h3>
+      <ul class="rules">
+        <li>24 questions</li>
+        <li>45 minutes timer</li>
+        <li>Language locked to English</li>
+        <li>You can navigate Previous / Next / Skip</li>
+      </ul>
+      <div class="modal-actions">
+        <button id="examCancelBtn" class="btn-secondary">Cancel</button>
+        <button id="examBeginBtn" class="btn-primary">I’m ready, begin</button>
+      </div>
     </div>
   </div>
-</div>
 
   <main id="app" class="card">
     <div id="meta" class="meta">

@@ -29,7 +29,7 @@ function lockLanguage(lock) {
 }
 
 /* ===== Config ===== */
-const CSV_URL = "./questions.csv";
+const CSV_URL = "./questions_168_sets_A-G.csv?v=20250929";
 const I18N_URLS = { zh: "./i18n.zh.json", en: "./i18n.en.json" };
 const LS_WRONG_KEY = "liuk_wrong_ids_v1";
 const LS_LANG_KEY = "liuk_lang_v1";
@@ -325,7 +325,7 @@ function renderCurrent() {
   updateMeta();
 
   if (!deck.length) {
-    qEl.textContent = i18n.no_questions || "No questions available. Check questions.csv.";
+    qEl.textContent = i18n.hint_press_start || "Press Start to load questions";
     optsEl.innerHTML = "";
     navEl.classList.add("hidden");
     flashBtns.classList.add("hidden");
@@ -407,7 +407,6 @@ async function startSession(mode) {
   inSummary = false;
   score = 0; wrong = 0; idx = 0; answered = false;
 
-  // 移除舊覆核面板
   const oldPanel = document.getElementById(reviewContainerId);
   if (oldPanel) oldPanel.remove();
   reviewMode = false;
@@ -428,6 +427,25 @@ async function startSession(mode) {
     candidate = candidate.filter(q => ids.has(q.id));
   }
 
+  // ✅ 若已經載入數據，但經過篩選（或真的空）導致沒題，這時候先顯示「No questions…」
+  if (!candidate.length) {
+    deck = [];
+    qEl.textContent = i18n.no_questions || "No questions available. Check /questions_168_sets_A-G.csv.";
+    optsEl.innerHTML = "";
+    navEl.classList.add("hidden");
+    flashBtns.classList.add("hidden");
+    updateMeta(true);
+    // 考試模式保護：避免殘留倒數與鎖語言
+    disableUnloadWarning();
+    lockLanguage(false);
+    submitBtn.classList.add("hidden");
+    timerEl.classList.add("hidden");
+    prevBtn.classList.add("hidden");
+    skipBtn.classList.add("hidden");
+    unansweredEl.classList.add("hidden");
+    return; // 直接收尾
+  }
+
   // === 造 deck ===
   if (mode === "exam") {
     deck = shuffle(candidate.map(q => ({ ...q }))).slice(0, Math.min(24, candidate.length));
@@ -435,6 +453,7 @@ async function startSession(mode) {
     deck = shuffle(candidate.map(q => ({ ...q })));
   }
   deck.forEach(shuffleOptionsInPlace);
+
 
   // === 語言／UI ===
   const exitBtn = document.querySelector("[data-action='exit-exam']");
@@ -883,6 +902,7 @@ function addWrong(id) {
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   if (!lines.length) return [];
+  lines[0] = lines[0].replace(/^\uFEFF/, "");
 
   const header = splitCSVLine(lines.shift());
   const idxMap = Object.fromEntries(header.map((h, i) => [String(h || "").trim(), i]));
@@ -894,14 +914,25 @@ function parseCSV(text) {
       const v = (i == null) ? "" : (cols[i] || "");
       return (typeof v === "string") ? v.trim() : v;
     };
-    const id = Number(get("id") || (rowIdx + 1));
+
+    // ★ 優先使用 Englandid，其次 id，最後才用列號作後備
+    const englandIdRaw = get("Englandid");
+    const anyIdRaw = get("id");
+    const idNum = Number(englandIdRaw || anyIdRaw || (rowIdx + 1));
+
     return {
-      id: isNaN(id) ? (rowIdx + 1) : id,
+      id: isNaN(idNum) ? (rowIdx + 1) : idNum,
       topic: get("topic"),
       question_en: get("question_en"),
       question_zh: get("question_zh"),
-      options_en: String(get("options_en") || "").split(" | ").map(s => s.trim()).filter(Boolean),
-      options_zh: String(get("options_zh") || "").split(" | ").map(s => s.trim()).filter(Boolean),
+      options_en: String(get("options_en") || "")
+                    .split(" | ")
+                    .map(s => s.trim())
+                    .filter(Boolean),
+      options_zh: String(get("options_zh") || "")
+                    .split(" | ")
+                    .map(s => s.trim())
+                    .filter(Boolean),
       answer_index: Number(get("answer_index") || 0)
     };
   });
