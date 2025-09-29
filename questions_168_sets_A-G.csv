@@ -167,3 +167,51 @@ Englandid,topic,question_en,question_zh,options_en,options_zh,answer_index
 167,Set G,How often must a UK general election be held at most (under current law)?,按現行法律，英國大選至多相隔多久必須舉行一次？,Every five years | Every three years | Every seven years | Every two years,每五年 | 每三年 | 每七年 | 每兩年,0
 168,Set G,Who is responsible for day‑to‑day running of government departments?,誰負責政府部門的日常運作？,Civil servants | Members of the House of Lords | The Monarch | Local councillors,文職公務員 | 上議院議員 | 君主 | 地方議員,0
 169,Set G,What is the main role of the Speaker in the House of Commons?,下議院議長的主要職責是？,Chair debates and keep order | Set government policy | Lead the opposition | Appoint judges,主持辯論並維持秩序 | 制定政府政策 | 領導在野黨 | 任命法官,0
+170,Set H,"Which UK emergency number connects you to police, fire or ambulance?",英國撥打哪個緊急電話可聯絡警方、消防或救護？,999 | 112 | 101 | 123,999 | 112 | 101（非緊急） | 123,0
+171,Set H,What is the non-emergency number for the police in most of the UK?,在英國大部分地區，警方的非緊急聯絡電話是？,101 | 111 | 999 | 123,101 | 111 | 999 | 123,0
+172,Set H,Which website publishes UK legislation?,哪個網站可查閱英國現行法例文本？,legislation.gov.uk | gov.uk/acts | royal.uk/laws | parliament.tv,legislation.gov.uk | gov.uk/acts | royal.uk/laws | parliament.tv,0
+173,Set H,Who opens the UK Parliament each year with a speech?,每年由誰發表演說開啟國會會期？,The Monarch | The Prime Minister | The Speaker | The Archbishop of Canterbury,君主 | 首相 | 下議院議長 | 坎特伯雷大主教,0
+174,Set H,Which body scrutinises the work of the government in the Commons?,哪個機制在下議院審查政府工作？,Select Committees | The Supreme Court | The Electoral Commission | NATO Council,專責委員會（Select Committees） | 最高法院 | 選舉委員會 | 北約理事會,0
+175,Set H,What do we call the head of a local council’s administration?,地方議會行政機關的首長通常稱為？,Chief Executive | Chancellor | High Sheriff | Commissioner,行政總監（Chief Executive） | 財相 | 高級郡長 | 專員,0
+176,Set H,Which UK tax is deducted from most employees’ wages?,大多數受僱人士薪金會扣除哪一種稅？,Income Tax | Council Tax | Stamp Duty | Capital Gains Tax,入息稅 | 市政稅 | 印花稅 | 資本增值稅,0
+177,Set H,Which UK public service is funded by general taxation and free at point of use?,哪項公共服務由一般稅收資助，使用時免費？,The NHS | Universities | Private GP services | TV licence,國民保健制度（NHS） | 大學 | 私人全科服務 | 電視牌照,0
+178,Set H,When do people wear a red poppy to commemorate the fallen?,人們何時佩戴紅罌粟以悼念陣亡者？,Around Remembrance Day in November | On New Year’s Day | On May Day | On St George’s Day,每年11月悼念日前後 | 元旦 | 五朔節 | 聖喬治日,0
+179,Set H,Which is a UK bank holiday often at the end of August?,下列哪個是英國於8月底附近的公眾假期？,Summer Bank Holiday | Spring Bank Holiday | Good Friday | Boxing Day,夏季銀行假期 | 春季銀行假期 | 耶穌受難日 | 節禮日,0
+180,Set H,Which UK sport uses terms like ‘try’ and ‘conversion’?,哪項英國運動有「達陣（try）」與「加踢（conversion）」等術語？,Rugby | Cricket | Tennis | Snooker,欖球 | 板球 | 網球 | 桌球,0
+181,Set H,Which novelist wrote ‘Pride and Prejudice’?,誰寫了《傲慢與偏見》？,Jane Austen | Charlotte Brontë | Emily Brontë | Mary Shelley,珍·奧斯汀 | 夏綠蒂·勃朗特 | 艾蜜莉·勃朗特 | 瑪麗·雪萊,0
+182,Set H,Which UK city is famous for the Giant’s Causeway nearby?,哪座城市鄰近著名的巨人之路？,Belfast | Cardiff | Edinburgh | Birmingham,貝爾法斯特 | 加的夫 | 愛丁堡 | 伯明翰,0
+183,Set H,What is the capital city of Wales?,威爾士的首都是？,Cardiff | Swansea | Newport | Bangor,加的夫 | 斯旺西 | 紐波特 | 班戈,0
+184,Set H,Which UK region celebrates St Patrick’s Day as a public holiday?,哪個英國地區把聖派翠克日作為公眾假期？,Northern Ireland | Scotland | England | Wales,北愛爾蘭 | 蘇格蘭 | 英格蘭 | 威爾士,0
+185,Set H,What is the union flag of the UK commonly called?,英國的聯合旗通常稱為？,Union Jack | Stars and Stripes | Maple Leaf | Saltire,米字旗（Union Jack） | 星條旗 | 楓葉旗 | 聖安德烈十字旗,0
+186,Set H,Which invention is George Stephenson associated with?,喬治·史提芬遜與哪項發明相關？,Steam railway locomotives | Television | Telephone | Jet engine,蒸汽鐵路機車 | 電視 | 電話 | 噴射發動機,0
+187,Set H,Who painted ‘The Hay Wain’?,誰畫了《乾草車》？,John Constable | J. M. W. Turner | Thomas Gainsborough | William Hogarth,康斯特布爾 | 透納 | 庚斯博羅 | 霍加斯,0
+188,Set H,Which event is marked by fireworks on 5 November?,每年11月5日通常以煙火慶祝的是？,Bonfire Night (Guy Fawkes Night) | St Andrew’s Day | Easter Monday | Burns Night,煙火夜（蓋·福克斯之夜） | 聖安德烈日 | 復活節星期一 | 彭斯之夜,0
+189,Set H,Which court is the final court of appeal in the UK for civil cases?,英國民事案件的最終上訴法院是？,The Supreme Court | The High Court | The Crown Court | Magistrates’ Court,最高法院 | 高等法院 | 刑事法院（Crown Court） | 裁判法院,0
+190,Set H,What is the minimum age to serve on a jury in the UK?,在英國擔任陪審員的最低年齡是？,18 | 16 | 21 | 25,18歲 | 16歲 | 21歲 | 25歲,0
+191,Set H,Which two houses make up the UK Parliament?,英國國會由哪兩院組成？,House of Commons and House of Lords | Senate and Assembly | Dáil and Seanad | States General,下議院與上議院 | 參議院與眾議院 | 愛爾蘭眾議院與參議院 | 荷蘭國會兩院,0
+192,Set H,Which 1215 document limited the king and inspired later rights?,1215年的哪份文件限制了國王權力並啟發後世權利？,Magna Carta | Bill of Rights | Act of Union | Petition of Right,大憲章（Magna Carta） | 權利法案 | 聯合法案 | 權利請願書,0
+193,Set H,Which is the national flower of Scotland?,以下哪個是蘇格蘭的國花？,Thistle | Rose | Shamrock | Daffodil,薊花 | 玫瑰 | 酢漿草 | 黃水仙,0
+194,Set I,Where is the UK Parliament located?,英國國會位於哪裡？,"Westminster, London | Holyrood, Edinburgh | Stormont, Belfast | Cardiff Bay",倫敦威斯敏斯特 | 愛丁堡荷里路德 | 北愛爾蘭斯托蒙特 | 加的夫灣,0
+195,Set I,What is the established church in Scotland?,蘇格蘭的國家教會是？,The Church of Scotland (Presbyterian) | The Church of England | The Catholic Church | The Free Church,蘇格蘭教會（長老會） | 英格蘭教會 | 天主教會 | 自由教會,0
+196,Set I,Which legal system uses ‘solicitors’ and ‘barristers’ in England and Wales?,英格蘭及威爾士的法律職業分工包括哪兩類？,Solicitors and barristers | Notaries and procurators | Advocates and sheriffs | Judges and clerks,事務律師與出庭大律師 | 公證人與檢察官 | 辯護律師與郡長 | 法官與書記官,0
+197,Set I,Who can vote in UK Parliamentary elections (general rule)?,一般而言，哪些人可在英國大選中投票？,"UK, Irish or qualifying Commonwealth citizens aged 18+ resident and registered | Anyone paying tax in the UK | EU citizens living in the UK | Tourists",年滿18歲且已登記的英國、公民身份為愛爾蘭或合資格英聯邦人士 | 任何在英國納稅的人 | 在英國的歐盟公民 | 旅客,0
+198,Set I,How many jurors serve on a jury in England and Wales (standard)?,在英格蘭及威爾士，標準陪審團由多少名陪審員組成？,12 | 7 | 9 | 15,12名 | 7名 | 9名 | 15名,0
+199,Set I,What is the national day of Scotland?,蘇格蘭的國慶（主保聖人日）是？,St Andrew’s Day (30 November) | St George’s Day (23 April) | St David’s Day (1 March) | St Patrick’s Day (17 March),聖安德烈日（11月30日） | 聖喬治日（4月23日） | 聖大衛日（3月1日） | 聖派翠克日（3月17日）,0
+200,Set I,Which scientist discovered the structure of DNA alongside Watson and Crick?,與華生和克里克共同揭示 DNA 結構的英國科學家是？,Rosalind Franklin (contributed crucial X-ray data) | Isaac Newton | Charles Darwin | Michael Faraday,羅莎琳·富蘭克林（貢獻關鍵X光數據） | 艾薩克·牛頓 | 查爾斯·達爾文 | 法拉第,0
+201,Set I,Which Prime Minister led the formation of the NHS (post-war government)?,哪位首相領導的戰後政府建立了 NHS？,Clement Attlee | Winston Churchill (1951–55) | Harold Wilson | John Major,艾德禮 | 邱吉爾（1951–55） | 威爾遜 | 梅傑,0
+202,Set I,What is celebrated on Burns Night?,彭斯之夜主要紀念誰？,Scottish poet Robert Burns | Shakespeare | Dylan Thomas | Seamus Heaney,蘇格蘭詩人羅伯特·彭斯 | 莎士比亞 | 狄蘭·托馬斯 | 謝默斯·希尼,0
+203,Set I,Which UK coin features the Royal Shield when combined?,哪一組英國硬幣合起來會拼出皇家盾徽圖案？,1p–50p coins (pre-2020 designs) | £1 coins only | £2 coins only | Old £1 notes,1便士至50便士硬幣（2020年前設計） | 只有1鎊硬幣 | 只有2鎊硬幣 | 舊1鎊紙幣,0
+204,Set I,What is the role of the Crown Prosecution Service (CPS)?,皇家檢控署（CPS）的職能是？,Prosecute criminal cases investigated by the police | Defend accused persons | Make the law | Collect taxes,起訴警方調查的刑事案件 | 為被告辯護 | 立法 | 徵稅,0
+205,Set I,Which UK festival is associated with Notting Hill in London?,哪個著名節慶與倫敦諾丁山有關？,Notting Hill Carnival | Glastonbury Festival | Edinburgh Fringe | Henley Royal Regatta,諾丁山嘉年華 | 格拉斯頓伯里音樂節 | 愛丁堡藝穗節 | 亨利皇家賽艇會,0
+206,Set I,Which river flows through London?,哪條河流經倫敦市中心？,The Thames | The Severn | The Clyde | The Tyne,泰晤士河 | 塞文河 | 克萊德河 | 泰恩河,0
+207,Set I,Which British territory is at the southern tip of the Iberian Peninsula?,位於伊比利半島南端的英國屬地是？,Gibraltar | Falkland Islands | Bermuda | Cayman Islands,直布羅陀 | 福克蘭群島 | 百慕達 | 開曼群島,0
+208,Set I,What do MPs stand for in the House of Commons?,縮寫 MP 代表甚麼？,Members of Parliament | Ministers of Parliament | Municipal Presidents | Magistrate Protectors,國會議員 | 國會部長 | 市政首長 | 裁判官保佐,0
+209,Set I,"What is the UK’s highest court in criminal cases for England, Wales and Northern Ireland?",對英格蘭、威爾士及北愛爾蘭的刑事案件，英國的最高法院是？,The Supreme Court | The Crown Court | The Court of Appeal (final) | The Privy Council,最高法院 | 刑事法院（Crown Court） | 上訴法院（非最終） | 樞密院,0
+210,Set I,Which treaty created the United Kingdom of Great Britain and Ireland in 1801?,1801年哪項法案/條約使大不列顛與愛爾蘭合併？,Act of Union 1800 (came into force 1801) | Treaty of Versailles | Union with Scotland Act 1706 | Reform Act 1832,1800年《聯合法案》（1801年生效） | 凡爾賽條約 | 1706年蘇格蘭聯合法案 | 1832年改革法案,0
+211,Set I,Which UK body sets interest rates independently of government since 1997?,自1997年起，哪個機構獨立決定利率？,Bank of England’s Monetary Policy Committee | HM Treasury | House of Lords | Financial Conduct Authority,英格蘭銀行貨幣政策委員會 | 財政部 | 上議院 | 金融行為監管局,0
+212,Set I,Which is the patron saint of England?,英格蘭的主保聖人是？,St George | St Andrew | St David | St Patrick,聖喬治 | 聖安德烈 | 聖大衛 | 聖派翠克,0
+213,Set I,Which UK document from 1689 affirmed the rights of Parliament?,1689年的哪份文件確認了國會的權利？,Bill of Rights | Petition of Right | Habeas Corpus Act | Act of Settlement,權利法案 | 權利請願書 | 人身保護法 | 王位繼承法,0
+214,Set I,What is the small claims track mainly used for in civil courts?,民事法庭中的小額索償程序主要用於？,Low-value disputes (e.g. consumer claims) | Serious criminal trials | Divorce proceedings | Immigration appeals,低金額糾紛（如消費索償） | 嚴重刑事審判 | 離婚程序 | 移民上訴,0
+215,Set I,Which UK city hosts the HMS Victory museum ship?,哪座英國城市收藏博物館艦「勝利號」？,Portsmouth | Plymouth | Liverpool | Bristol,樸次茅斯 | 普利茅斯 | 利物浦 | 布里斯托,0
+216,Set I,Which country is NOT part of the UK?,以下哪個國家**不**屬於英國？,Republic of Ireland | Wales | Scotland | England,愛爾蘭共和國 | 威爾士 | 蘇格蘭 | 英格蘭,0
+217,Set I,Which city hosts the UK Parliament of Scotland (the Scottish Parliament)?,蘇格蘭議會（蘇格蘭國會）位於哪座城市？,Edinburgh (Holyrood) | Glasgow | Aberdeen | Inverness,愛丁堡（荷里路德） | 格拉斯哥 | 阿伯丁 | 因弗內斯,0

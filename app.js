@@ -403,6 +403,20 @@ function shuffleOptionsInPlace(q) {
 
 /* ===== Render ===== */
 async function startSession(mode) {
+  // 先確保資料已載入（無論由邊度觸發）
+  if (!allQuestions.length) {
+    try {
+      await ensureDataLoaded();
+    } catch (e) {
+      // 載入失敗：顯示提示而不是報 No questions
+      qEl.textContent = i18n.hint_press_start || "Press Start to load questions";
+      optsEl.innerHTML = "";
+      navEl.classList.add("hidden");
+      flashBtns.classList.add("hidden");
+      return;
+    }
+  }
+
   // === reset ===
   inSummary = false;
   score = 0; wrong = 0; idx = 0; answered = false;
@@ -427,7 +441,7 @@ async function startSession(mode) {
     candidate = candidate.filter(q => ids.has(q.id));
   }
 
-  // ✅ 若已經載入數據，但經過篩選（或真的空）導致沒題，這時候先顯示「No questions…」
+  // ✅ 只有「資料已載入」但「篩完真係零題」先顯示 No questions
   if (!candidate.length) {
     deck = [];
     qEl.textContent = i18n.no_questions || "No questions available. Check /questions_168_sets_A-G.csv.";
@@ -435,69 +449,70 @@ async function startSession(mode) {
     navEl.classList.add("hidden");
     flashBtns.classList.add("hidden");
     updateMeta(true);
-    // 考試模式保護：避免殘留倒數與鎖語言
-    disableUnloadWarning();
-    lockLanguage(false);
+    // 清理考試狀態
+    disableUnloadWarning(); lockLanguage(false);
     submitBtn.classList.add("hidden");
     timerEl.classList.add("hidden");
     prevBtn.classList.add("hidden");
     skipBtn.classList.add("hidden");
     unansweredEl.classList.add("hidden");
-    return; // 直接收尾
+    return;
   }
 
   // === 造 deck ===
-  if (mode === "exam") {
-    deck = shuffle(candidate.map(q => ({ ...q }))).slice(0, Math.min(24, candidate.length));
-  } else {
-    deck = shuffle(candidate.map(q => ({ ...q })));
-  }
-  deck.forEach(shuffleOptionsInPlace);
+if (mode === "exam") {
+  deck = shuffle(candidate.map(q => ({ ...q }))).slice(0, Math.min(24, candidate.length));
+} else {
+  deck = shuffle(candidate.map(q => ({ ...q })));
+}
+deck.forEach(shuffleOptionsInPlace);
 
+// === 語言／UI ===   ← 從這行開始用你新版取代
+const exitBtn = document.querySelector("[data-action='exit-exam']");
 
-  // === 語言／UI ===
-  const exitBtn = document.querySelector("[data-action='exit-exam']");
+if (examMode) {
+  exitBtn?.classList.remove("hidden");
+  navEl.classList.add("exam-ui");
+  exitBtn?.classList.add("btn-danger");
+  enableUnloadWarning();
 
-  if (examMode) {
-    // 只在考試模式顯示 Exit
-    exitBtn?.classList.remove("hidden");
+  if (lang !== "en") prevLangForExam = lang;
+  setLanguage("en");
+  lockLanguage(true);
 
-    enableUnloadWarning();
+  examAnswers = Array(deck.length).fill(null);
+  startExamTimer(45 * 60);
 
-    if (lang !== "en") prevLangForExam = lang;
-    setLanguage("en");
-    lockLanguage(true);
+  submitBtn.textContent = i18n.submit || "Submit";
+  submitBtn.classList.remove("hidden");
+  timerEl.classList.remove("hidden");
+  prevBtn.classList.remove("hidden");
+  skipBtn.classList.remove("hidden");
+  unansweredEl.classList.remove("hidden");
+  tipEl.textContent = i18n.tip_exam || "Exam mode: 24 questions, 45 minutes. Good luck!";
+  updateUnansweredUI();
+} else {
+  exitBtn?.classList.add("hidden");
 
-    examAnswers = Array(deck.length).fill(null);
-    startExamTimer(45 * 60);
+  navEl.classList.remove("exam-ui");
+  exitBtn?.classList.remove("btn-danger");
 
-    submitBtn.textContent = i18n.submit || "Submit";
-    submitBtn.classList.remove("hidden");
-    timerEl.classList.remove("hidden");
-    prevBtn.classList.remove("hidden");
-    skipBtn.classList.remove("hidden");
-    unansweredEl.classList.remove("hidden");
-    tipEl.textContent = i18n.tip_exam || "Exam mode: 24 questions, 45 minutes. Good luck!";
-    updateUnansweredUI();
-  } else {
-    // 非考試模式隱藏 Exit
-    exitBtn?.classList.add("hidden");
+  disableUnloadWarning();
+  lockLanguage(false);
+  if (prevLangForExam) { setLanguage(prevLangForExam); prevLangForExam = null; }
+  submitBtn.classList.add("hidden");
+  timerEl.classList.add("hidden");
+  prevBtn.classList.add("hidden");
+  skipBtn.classList.add("hidden");
+  unansweredEl.classList.add("hidden");
+  tipEl.textContent =
+    (mode === "review")
+      ? (deck.length ? (i18n.tip_review || "Reviewing your wrong answers.") : (i18n.tip_no_review || "No wrong answers saved yet."))
+      : (mode === "flash" ? (i18n.tip_flash || "Flashcards mode: reveal then self-mark.") : "");
+}
 
-    disableUnloadWarning();
-    lockLanguage(false);
-    if (prevLangForExam) { setLanguage(prevLangForExam); prevLangForExam = null; }
-    submitBtn.classList.add("hidden");
-    timerEl.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-    skipBtn.classList.add("hidden");
-    unansweredEl.classList.add("hidden");
-    tipEl.textContent =
-      (mode === "review")
-        ? (deck.length ? (i18n.tip_review || "Reviewing your wrong answers.") : (i18n.tip_no_review || "No wrong answers saved yet."))
-        : (mode === "flash" ? (i18n.tip_flash || "Flashcards mode: reveal then self-mark.") : "");
-  }
+renderCurrent(); // ← 保持喺 if/else 之後
 
-  renderCurrent();
 }
 
 function gotoPrev() {

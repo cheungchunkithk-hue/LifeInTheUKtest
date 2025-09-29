@@ -224,6 +224,40 @@ body {
   .meta { gap: 4px; }
 }
 
+/* Exam mode: 讓 nav 可以換行 */
+#nav.exam-ui {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Exit Exam 放到第二行、獨佔一行、佔滿寬度 */
+#nav.exam-ui #exitExamBtn {
+  order: 99;              /* 放最後一個 */
+  flex: 0 0 100%;         /* 直接用 100% 主軸寬度 */
+  width: 100%;            /* 防個別瀏覽器只用內容寬 */
+  align-self: stretch;    /* 拉滿交叉軸（有助配合不同行高） */
+}
+
+/* 危險/強警示按鈕（紅色） */
+.nav .btn-danger,
+#nav .btn-danger {
+  background: #d93025;
+  border-color: #d93025;
+  color: #fff;
+}
+.nav .btn-danger:hover,
+#nav .btn-danger:hover,
+.nav .btn-danger:focus,
+#nav .btn-danger:focus {
+  background: #b1271a;
+  border-color: #b1271a;
+}
+.btn-danger:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
 /* ===== Exam Ready Modal ===== */
 .modal.hidden { display: none !important; }
 .modal {
@@ -231,7 +265,7 @@ body {
   background: rgba(0,0,0,.45);
   display: grid; place-items: center;
   z-index: 999;
-  backdrop-filter: blur(2px); /* 少少霧化 */
+  backdrop-filter: blur(2px);
 }
 .modal-dialog {
   width: min(520px, 92vw);
